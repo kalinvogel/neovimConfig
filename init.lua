@@ -9,7 +9,7 @@ vim.o.syntax = "on"           -- Enable syntax highlighting
 vim.o.tabstop = 4             -- Tab width of 4 spaces
 vim.o.shiftwidth = 4          -- Indentation width of 4 spaces
 vim.o.expandtab = true        -- Convert tabs to spaces
-
+vim.g.mapleader = " "
 
 -- Install lazy.nvim plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -24,19 +24,23 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local plugins = {
+	{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}
+}
+
 -- Plugin setup using Lazy.nvim
 require("lazy").setup({
   { "catppuccin/nvim", name = "catppuccin" } ,
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
       dependencies = { 'nvim-lua/plenary.nvim' }
-    }
+    },
 })
 
 
 local builtin = require("telescope.builtin")
 vim.keymap.set('n','<C-p>', builtin.find_files,{})
-
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 
 -- Set the theme
 vim.cmd("colorscheme catppuccin-mocha")
@@ -44,3 +48,5 @@ vim.cmd("colorscheme catppuccin-mocha")
 vim.api.nvim_set_keymap('i','jk','<Esc>',{ noremap = true, silent = true})
 
 vim.opt.clipboard = "unnamedplus"
+
+--TreeSitter
