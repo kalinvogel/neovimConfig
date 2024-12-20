@@ -1,3 +1,7 @@
+--
+--
+-- PS C:\Users\kalin\AppData\Local\nvim>
+--
 -- General settings
 vim.o.number = true           -- Show line numbers
 vim.o.relativenumber = true   -- Show relative line numbers
