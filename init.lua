@@ -38,6 +38,8 @@ require("lazy").setup({
 })
 
 
+vim.api.nvim_set_keymap("n", "<F5>", ":!gcc % -o %< && .\\%< <CR>", { noremap = true, silent = true })
+
 local builtin = require("telescope.builtin")
 vim.keymap.set('n','<C-p>', builtin.find_files,{})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
@@ -50,3 +52,17 @@ vim.api.nvim_set_keymap('i','jk','<Esc>',{ noremap = true, silent = true})
 vim.opt.clipboard = "unnamedplus"
 
 --TreeSitter
+
+
+
+-- Highlight text on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = "IncSearch", -- You can change this to any highlight group
+            timeout = 200,         -- Duration of highlight in milliseconds
+        })
+    end,
+})
+
