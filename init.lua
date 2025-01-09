@@ -25,34 +25,41 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-	{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}
+	{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    {"catpuccin/nvim",name = "catpuccin"},
+    {"nvim-telescope/telescope.nvim",tag = '0.1.8', 
+    dependencies = { 'nvim-lua/plenary.nvim'}
+    },
+    { "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
+    }
 }
 
 -- Plugin setup using Lazy.nvim
-require("lazy").setup({
-  { "catppuccin/nvim", name = "catppuccin" } ,
-  {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
-      dependencies = { 'nvim-lua/plenary.nvim' }
-    },
-})
+require("lazy").setup(plugins)
 
 
 vim.api.nvim_set_keymap("n", "<F5>", ":!gcc % -o %< && .\\%< <CR>", { noremap = true, silent = true })
 
 local builtin = require("telescope.builtin")
-vim.keymap.set('n','<C-p>', builtin.find_files,{})
+vim.keymap.set('n','<leader>p', builtin.find_files,{})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 
 -- Set the theme
 vim.cmd("colorscheme catppuccin-mocha")
 
+
 vim.api.nvim_set_keymap('i','jk','<Esc>',{ noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('n', '<leader>s', '/', { noremap = true, silent = false })
+
+--enable smartcase for searching
+vim.opt.smartcase = true
+
+vim.opt.autoindent = true
 
 vim.opt.clipboard = "unnamedplus"
 
 --TreeSitter
-
 
 
 -- Highlight text on yank
