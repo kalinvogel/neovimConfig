@@ -26,12 +26,14 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
 	{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-    {"catpuccin/nvim",name = "catpuccin"},
+    {"catpuccin/nvim",name = "catppuccin"},
     {"nvim-telescope/telescope.nvim",tag = '0.1.8', 
     dependencies = { 'nvim-lua/plenary.nvim'}
     },
     { "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
-    }
+    },
+    { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons', -- optional, for file icons
+}, config = function() require('nvim-tree').setup {} end }
 }
 
 -- Plugin setup using Lazy.nvim
@@ -60,6 +62,11 @@ vim.opt.autoindent = true
 vim.opt.clipboard = "unnamedplus"
 
 --TreeSitter
+
+
+--NVIM-TREE
+vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+
 
 
 -- Highlight text on yank
