@@ -14,23 +14,23 @@ vim.g.mapleader = " "
 -- Install lazy.nvim plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-	{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
     {"catppuccin/nvim",name = "catppuccin"},
     {"nvim-telescope/telescope.nvim",tag = '0.1.8', 
     dependencies = { 'nvim-lua/plenary.nvim'}
-    },
-    { "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
+},
+{ "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
     },
     { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons', -- optional, for file icons
 }, config = function() require('nvim-tree').setup {} end }
@@ -43,8 +43,10 @@ require("lazy").setup(plugins)
 vim.api.nvim_set_keymap("n", "<F5>", ":!gcc % -o %< && .\\%< <CR>", { noremap = true, silent = true })
 
 local builtin = require("telescope.builtin")
-vim.keymap.set('n','<leader>p', builtin.find_files,{})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { noremap = true, silent = true }) 
+vim.api.nvim_set_keymap('n', '<leader>lg', '<cmd>Telescope live_grep<cr>', { noremap = true, silent = true }) 
+vim.api.nvim_set_keymap('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { noremap = true, silent = true })  
+vim.api.nvim_set_keymap('n', '<leader>rf', '<cmd>Telescope oldfiles<cr>', { noremap = true, silent = tru})
 
 -- Set the theme
 vim.cmd("colorscheme catppuccin-mocha")
