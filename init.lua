@@ -26,7 +26,7 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
 	{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-    {"catpuccin/nvim",name = "catppuccin"},
+    {"catppuccin/nvim",name = "catppuccin"},
     {"nvim-telescope/telescope.nvim",tag = '0.1.8', 
     dependencies = { 'nvim-lua/plenary.nvim'}
     },
