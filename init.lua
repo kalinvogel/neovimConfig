@@ -33,7 +33,20 @@ local plugins = {
 { "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
     },
     { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons', -- optional, for file icons
-}, config = function() require('nvim-tree').setup {} end }
+}, config = function() require('nvim-tree').setup {} end },
+{"neovim/nvim-lspconfig", config = function()
+        local lspconfig = require('lspconfig')
+
+        -- TypeScript Language Server
+        lspconfig.tsserver.setup {}
+
+        -- Angular Language Server
+        lspconfig.angularls.setup {
+            cmd = { "node", "./node_modules/@angular/language-server/index.js", "--stdio" }, -- Local setup
+            filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
+            root_dir = lspconfig.util.root_pattern("angular.json", ".git"),
+        }
+    end }
 }
 
 -- Plugin setup using Lazy.nvim
