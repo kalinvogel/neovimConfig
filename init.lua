@@ -27,13 +27,23 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
     {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
     {"catppuccin/nvim",name = "catppuccin"},
-    {"nvim-telescope/telescope.nvim",tag = '0.1.8', 
+    {"nvim-telescope/telescope.nvim",
     dependencies = { 'nvim-lua/plenary.nvim'}
 },
 { "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
     },
     { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons', -- optional, for file icons
 }, config = function() require('nvim-tree').setup {} end },
+    {
+        "williamboman/mason.nvim",
+        config = function()
+            require("mason").setup()
+
+        end
+    },
+    {
+        "williamboman/mason-lspconfig.nvim"
+    },
 {"neovim/nvim-lspconfig", config = function()
         local lspconfig = require('lspconfig')
 
@@ -46,8 +56,16 @@ local plugins = {
             filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
             root_dir = lspconfig.util.root_pattern("angular.json", ".git"),
         }
+
+        lspconfig.jdtls.setup {}
     end }
 }
+
+-- LSP keymaps
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover Documentation" })
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Find References" })
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to Implementation" })
 
 -- Plugin setup using Lazy.nvim
 require("lazy").setup(plugins)
@@ -59,7 +77,7 @@ local builtin = require("telescope.builtin")
 vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { noremap = true, silent = true }) 
 vim.api.nvim_set_keymap('n', '<leader>lg', '<cmd>Telescope live_grep<cr>', { noremap = true, silent = true }) 
 vim.api.nvim_set_keymap('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { noremap = true, silent = true })  
-vim.api.nvim_set_keymap('n', '<leader>rf', '<cmd>Telescope oldfiles<cr>', { noremap = true, silent = tru})
+vim.api.nvim_set_keymap('n', '<leader>rf', '<cmd>Telescope oldfiles<cr>', { noremap = true, silent = true})
 
 -- Set the theme
 vim.cmd("colorscheme catppuccin-mocha")
@@ -71,6 +89,7 @@ vim.api.nvim_set_keymap('n', '<leader>s', '/', { noremap = true, silent = false 
 
 --enable smartcase for searching
 vim.opt.smartcase = true
+vim.opt.ignorecase = true
 
 vim.opt.autoindent = true
 
