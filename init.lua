@@ -95,6 +95,8 @@ vim.opt.autoindent = true
 
 vim.opt.clipboard = "unnamedplus"
 
+vim.opt.scrolloff = 3
+
 --TreeSitter
 
 
