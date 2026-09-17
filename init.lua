@@ -47,17 +47,31 @@ local plugins = {
 {"neovim/nvim-lspconfig", config = function()
         local lspconfig = require('lspconfig')
 
+        lspconfig.jdtls.setup {
+            root_dir = lspconfig.util.root_pattern(
+                "pom.xml",
+                "mvnw",
+                ".git"
+            ),
+            settings = {
+                java = {
+                    maven = {
+                        downloadSources = true,
+                    },
+                },
+            },
+        }
+
         -- TypeScript Language Server
         lspconfig.tsserver.setup {}
 
         -- Angular Language Server
         lspconfig.angularls.setup {
-            cmd = { "node", "./node_modules/@angular/language-server/index.js", "--stdio" }, -- Local setup
+            cmd = { "ngserver", "--stdio" },
             filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
             root_dir = lspconfig.util.root_pattern("angular.json", ".git"),
-        }
+}
 
-        lspconfig.jdtls.setup {}
     end }
 }
 
@@ -67,6 +81,10 @@ vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Find References" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to Implementation" })
 
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show diagnostic" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+
 -- Plugin setup using Lazy.nvim
 require("lazy").setup(plugins)
 
@@ -74,10 +92,25 @@ require("lazy").setup(plugins)
 vim.api.nvim_set_keymap("n", "<F5>", ":!gcc % -o %< && .\\%< <CR>", { noremap = true, silent = true })
 
 local builtin = require("telescope.builtin")
-vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { noremap = true, silent = true }) 
-vim.api.nvim_set_keymap('n', '<leader>lg', '<cmd>Telescope live_grep<cr>', { noremap = true, silent = true }) 
-vim.api.nvim_set_keymap('n', '<leader>bb', '<cmd>Telescope buffers<cr>', { noremap = true, silent = true })  
-vim.api.nvim_set_keymap('n', '<leader>rf', '<cmd>Telescope oldfiles<cr>', { noremap = true, silent = true})
+
+require("telescope").setup({
+    defaults = {
+        path_display = { "truncate" },
+        layout_strategy = "horizontal",
+        layout_config = {
+            horizontal = {
+                width = 0.95,
+                height = 0.90,
+                preview_width = 0.50,
+            },
+        },
+    },
+})
+
+vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+vim.keymap.set("n", "<leader>lg", builtin.live_grep, { desc = "Live grep" })
+vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Buffers" })
+vim.keymap.set("n", "<leader>rf", builtin.oldfiles, { desc = "Recent files" })
 
 -- Set the theme
 vim.cmd("colorscheme catppuccin-mocha")
@@ -90,17 +123,30 @@ vim.api.nvim_set_keymap('n', '<leader>s', '/', { noremap = true, silent = false 
 --enable smartcase for searching
 vim.opt.smartcase = true
 vim.opt.ignorecase = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
 
-vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.cursorline = true
+vim.opt.termguicolors = true
+vim.opt.signcolumn = "yes"
 
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.scrolloff = 3
 
+vim.keymap.set("n", "<leader>w", ":write<CR>", { desc = "Save" })
+vim.keymap.set("n", "<leader>q", ":quit<CR>", { desc = "Quit" })
+
+vim.keymap.set("n", "<leader>cr", [[:%s/\r//g<CR>]], {
+    desc = "Remove carriage returns"
+})
+
 --TreeSitter
 
 
 --NVIM-TREE
+--Move between file tree and editor using C-w then h or l
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 
