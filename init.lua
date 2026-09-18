@@ -33,7 +33,12 @@ local plugins = {
 { "folke/noice.nvim", config = function() require("noice").setup() end, dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", }
     },
     { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons', -- optional, for file icons
-}, config = function() require('nvim-tree').setup {} end },
+}, config = function() require('nvim-tree').setup {
+    update_focused_file = {
+        enable = true,
+        update_root = false
+    }
+} end },
     {
         "williamboman/mason.nvim",
         config = function()
