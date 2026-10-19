@@ -37,20 +37,24 @@ local plugins = {
     update_focused_file = {
         enable = true,
         update_root = false
-    }
+    },
+    view = {
+        width = 35,
+        adaptive_size = true,
+        side = "left",
+    },
 } end },
-    {
-        "williamboman/mason.nvim",
-        config = function()
-            require("mason").setup()
+{
+    "williamboman/mason.nvim",
+    config = function()
+        require("mason").setup()
 
-        end
-    },
-    {
-        "williamboman/mason-lspconfig.nvim"
-    },
-{"neovim/nvim-lspconfig", config = function()
-        local lspconfig = require('lspconfig')
+    end
+},
+{
+    "neovim/nvim-lspconfig",
+    config = function()
+        local lspconfig = require("lspconfig")
 
         lspconfig.jdtls.setup {
             root_dir = lspconfig.util.root_pattern(
@@ -67,17 +71,16 @@ local plugins = {
             },
         }
 
-        -- TypeScript Language Server
-        lspconfig.tsserver.setup {}
+        lspconfig.ts_ls.setup {}
 
-        -- Angular Language Server
         lspconfig.angularls.setup {
             cmd = { "ngserver", "--stdio" },
             filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
             root_dir = lspconfig.util.root_pattern("angular.json", ".git"),
+        }
+    end
 }
-
-    end }
+,
 }
 
 -- LSP keymaps
